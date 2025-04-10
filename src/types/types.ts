@@ -18,8 +18,6 @@ export interface Notification {
 }
 
 export interface AppContextType {
-  theme: string;
-  toggleTheme: () => void;
   user: User | null;
   login: (email: string, password: string) => void;
   logout: () => void;
