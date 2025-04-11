@@ -1,38 +1,18 @@
-import React, { useCallback, useMemo, useState } from "react";
-import { generateItems, renderLog } from "../utils";
+import React from "react";
+import { renderLog } from "../utils";
+import useItem from "../hooks/useItem";
 
-// ItemList 컴포넌트
 export const ItemListComponent: React.FC<{ theme: string }> = ({ theme }) => {
   renderLog("ItemList rendered");
-  const [items, setItems] = useState(() => generateItems(1000));
-  const [filter, setFilter] = useState("");
 
-  const filteredItems = useMemo(
-    () =>
-      items.filter(
-        (item) =>
-          item.name.toLowerCase().includes(filter.toLowerCase()) ||
-          item.category.toLowerCase().includes(filter.toLowerCase())
-      ),
-    [items, filter]
-  );
-
-  const addItems = useCallback(() => {
-    setItems((prevItems) => [
-      ...prevItems,
-      ...generateItems(1000, prevItems.length),
-    ]);
-  }, []);
-
-  const totalPrice = useMemo(
-    () => filteredItems.reduce((sum, item) => sum + item.price, 0),
-    [filteredItems]
-  );
-
-  const averagePrice = useMemo(
-    () => Math.round(totalPrice / filteredItems.length) || 0,
-    [totalPrice, filteredItems]
-  );
+  const {
+    filter,
+    setFilter,
+    filteredItems,
+    averagePrice,
+    addItems,
+    totalPrice,
+  } = useItem();
 
   return (
     <div className="mt-8">

@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useUser } from "../context/UserContext";
 import { renderLog } from "../utils";
 
@@ -8,11 +8,6 @@ export const HeaderComponent: React.FC<{
 }> = ({ theme, toggleTheme }) => {
   renderLog("Header rendered");
   const { user, login, logout } = useUser();
-  const handleLogin = useCallback(() => {
-    // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
-    login("user@example.com", "password");
-  }, [login]);
-
   return (
     <header className="bg-gray-800 text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
@@ -36,7 +31,7 @@ export const HeaderComponent: React.FC<{
             </div>
           ) : (
             <button
-              onClick={handleLogin}
+              onClick={() => login("user@example.com", "password")}
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
             >
               로그인

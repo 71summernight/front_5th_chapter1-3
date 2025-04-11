@@ -1,44 +1,12 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
 import { renderLog } from "../utils";
-import { useNotification } from "../context/NotificationContext";
-// ComplexForm 컴포넌트
+import useForm from "../hooks/useForm";
+import { ITEM_CATEGORIES } from "../constants/constants";
 export const ComplexFormComponent: React.FC = () => {
   renderLog("ComplexForm rendered");
-  const { addNotification } = useNotification();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    age: 0,
-    preferences: [] as string[],
-  });
 
-  const handleSubmit = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
-      addNotification("폼이 성공적으로 제출되었습니다", "success");
-    },
-    [addNotification],
-  );
-
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = e.target;
-      setFormData((prev) => ({
-        ...prev,
-        [name]: name === "age" ? parseInt(value) || 0 : value,
-      }));
-    },
-    [],
-  );
-
-  const handlePreferenceChange = useCallback((preference: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      preferences: prev.preferences.includes(preference)
-        ? prev.preferences.filter((p) => p !== preference)
-        : [...prev.preferences, preference],
-    }));
-  }, []);
+  const { formData, handleSubmit, handleInputChange, handlePreferenceChange } =
+    useForm();
 
   return (
     <div className="mt-8">
@@ -69,7 +37,7 @@ export const ComplexFormComponent: React.FC = () => {
           className="w-full p-2 border border-gray-300 rounded text-black"
         />
         <div className="space-x-4">
-          {["독서", "운동", "음악", "여행"].map((pref) => (
+          {ITEM_CATEGORIES.map((pref) => (
             <label key={pref} className="inline-flex items-center">
               <input
                 type="checkbox"
