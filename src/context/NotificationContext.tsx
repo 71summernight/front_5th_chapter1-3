@@ -27,18 +27,18 @@ export function NotificationProvider({
       };
       setNotifications((prev) => [...prev, newNotification]);
     },
-    []
+    [],
   );
 
   const removeNotification = useCallback((id: number) => {
     setNotifications((prev) =>
-      prev.filter((notification) => notification.id !== id)
+      prev.filter((notification) => notification.id !== id),
     );
   }, []);
 
   const value = useMemo(
     () => ({ notifications, addNotification, removeNotification }),
-    [notifications, addNotification, removeNotification]
+    [notifications, addNotification, removeNotification],
   );
   return (
     <NotificationContext.Provider value={value}>
@@ -51,7 +51,7 @@ export function useNotification() {
   const context = React.useContext(NotificationContext);
   if (!context) {
     throw new Error(
-      "useNotification must be used within a NotificationProvider"
+      "useNotification must be used within a NotificationProvider",
     );
   }
   return context;

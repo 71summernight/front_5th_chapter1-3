@@ -5,14 +5,14 @@ type ThemeContextType = {
   toggleTheme: () => void;
 };
 const ThemeContext = React.createContext<ThemeContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState("light");
   const toggleTheme = useCallback(
     () => setTheme((prev) => (prev === "light" ? "dark" : "light")),
-    []
+    [],
   );
 
   const value = useMemo(() => ({ theme, toggleTheme }), [theme, toggleTheme]);

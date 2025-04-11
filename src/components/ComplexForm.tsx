@@ -17,7 +17,7 @@ export const ComplexFormComponent: React.FC = () => {
       e.preventDefault();
       addNotification("폼이 성공적으로 제출되었습니다", "success");
     },
-    [addNotification]
+    [addNotification],
   );
 
   const handleInputChange = useCallback(
@@ -28,7 +28,7 @@ export const ComplexFormComponent: React.FC = () => {
         [name]: name === "age" ? parseInt(value) || 0 : value,
       }));
     },
-    []
+    [],
   );
 
   const handlePreferenceChange = useCallback((preference: string) => {

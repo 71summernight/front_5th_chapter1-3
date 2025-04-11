@@ -4,7 +4,7 @@ import { generateItems, renderLog } from "../utils";
 // ItemList 컴포넌트
 export const ItemListComponent: React.FC<{ theme: string }> = ({ theme }) => {
   renderLog("ItemList rendered");
-  const [items, setItems] = useState(generateItems(1000));
+  const [items, setItems] = useState(() => generateItems(1000));
   const [filter, setFilter] = useState("");
 
   const filteredItems = useMemo(
