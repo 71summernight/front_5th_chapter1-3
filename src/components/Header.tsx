@@ -1,16 +1,17 @@
-import { useTheme } from "../context/ThemeContext";
+import React, { useCallback } from "react";
 import { useUser } from "../context/UserContext";
 import { renderLog } from "../utils";
 
-export const Header: React.FC = () => {
+export const HeaderComponent: React.FC<{
+  theme: string;
+  toggleTheme: () => void;
+}> = ({ theme, toggleTheme }) => {
   renderLog("Header rendered");
-  const { theme, toggleTheme } = useTheme();
   const { user, login, logout } = useUser();
-
-  const handleLogin = () => {
+  const handleLogin = useCallback(() => {
     // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
     login("user@example.com", "password");
-  };
+  }, [login]);
 
   return (
     <header className="bg-gray-800 text-white p-4">
@@ -46,3 +47,4 @@ export const Header: React.FC = () => {
     </header>
   );
 };
+export const Header = React.memo(HeaderComponent);

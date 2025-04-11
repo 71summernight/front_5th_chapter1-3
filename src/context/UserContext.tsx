@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { User } from "../types/types";
 import { useNotification } from "./NotificationContext";
 
@@ -18,7 +18,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       setUser({ id: 1, name: "홍길동", email });
       addNotification("성공적으로 로그인되었습니다", "success");
     },
-    [addNotification],
+    [addNotification]
   );
 
   const logout = useCallback(() => {
@@ -26,11 +26,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     addNotification("로그아웃되었습니다", "info");
   }, [addNotification]);
 
-  return (
-    <UserContext.Provider value={{ user, login, logout }}>
-      {children}
-    </UserContext.Provider>
-  );
+  const value = useMemo(() => ({ user, login, logout }), [user, login, logout]);
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
 
 export function useUser() {

@@ -1,26 +1,38 @@
-import { useState } from "react";
-import { Item } from "../types/types";
-import { renderLog } from "../utils";
-import { useTheme } from "../context/ThemeContext";
+import React, { useCallback, useMemo, useState } from "react";
+import { generateItems, renderLog } from "../utils";
 
 // ItemList 컴포넌트
-export const ItemList: React.FC<{
-  items: Item[];
-  onAddItemsClick: () => void;
-}> = ({ items, onAddItemsClick }) => {
+export const ItemListComponent: React.FC<{ theme: string }> = ({ theme }) => {
   renderLog("ItemList rendered");
+  const [items, setItems] = useState(generateItems(1000));
   const [filter, setFilter] = useState("");
-  const { theme } = useTheme();
 
-  const filteredItems = items.filter(
-    (item) =>
-      item.name.toLowerCase().includes(filter.toLowerCase()) ||
-      item.category.toLowerCase().includes(filter.toLowerCase()),
+  const filteredItems = useMemo(
+    () =>
+      items.filter(
+        (item) =>
+          item.name.toLowerCase().includes(filter.toLowerCase()) ||
+          item.category.toLowerCase().includes(filter.toLowerCase())
+      ),
+    [items, filter]
   );
 
-  const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
+  const addItems = useCallback(() => {
+    setItems((prevItems) => [
+      ...prevItems,
+      ...generateItems(1000, prevItems.length),
+    ]);
+  }, []);
 
-  const averagePrice = Math.round(totalPrice / filteredItems.length) || 0;
+  const totalPrice = useMemo(
+    () => filteredItems.reduce((sum, item) => sum + item.price, 0),
+    [filteredItems]
+  );
+
+  const averagePrice = useMemo(
+    () => Math.round(totalPrice / filteredItems.length) || 0,
+    [totalPrice, filteredItems]
+  );
 
   return (
     <div className="mt-8">
@@ -30,7 +42,7 @@ export const ItemList: React.FC<{
           <button
             type="button"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs"
-            onClick={onAddItemsClick}
+            onClick={addItems}
           >
             대량추가
           </button>
@@ -61,3 +73,4 @@ export const ItemList: React.FC<{
     </div>
   );
 };
+export const ItemList = React.memo(ItemListComponent);
